@@ -20,10 +20,12 @@
 module ::Openstack
   # Search the nodes environment for the given role.
   #
-  # @param [String] role The role to be found.
+  # @param [String] role The role or recipe to be found.
   # @return [Array] The matching result or an empty list.
   def search_for role, &block
-    query = "chef_environment:#{node.chef_environment} AND roles:#{role}"
+    role_query = "chef_environment:#{node.chef_environment} AND roles:#{role}"
+    recipe_query = "chef_environment:#{node.chef_environment} AND recipes:#{role}".sub("::","\\:\\:")
+    query = "#{role_query} OR #{recipe_query}"
 
     resp = search(:node, query, &block)
     resp ? resp : []

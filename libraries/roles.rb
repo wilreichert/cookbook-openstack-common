@@ -36,7 +36,6 @@ module ::Openstack
       result = search_for role
 
       if result.empty?
-        log("Searched for role #{role} by found no nodes with that role in run list.") { level :debug }
         nil
       else
         section.nil? ? result[0] : result[0][section]
